@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Register</h1>
+
+    <input type="text" id="username" placeholder="Username">
+
+    <input type="email" id="email" placeholder="Email">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="register()">Register</button>
+
+    <p id="message"></p>
+
+    <p>
+        Already have an account?
+        <a href="login.html">Login</a>
+    </p>
+
+</div>
+
+<script>
+
+function register() {
+
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (username === "" || email === "" || password === "") {
+        document.getElementById("message").textContent =
+            "Please fill all fields.";
+        return;
+    }
+
+    if (password.length < 8 || !/\d/.test(password)) {
+        document.getElementById("message").textContent =
+            "Password must be at least 8 characters and contain a number.";
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const existingUser = users.find(function(user) {
+        return user.email === email || user.username === username;
+    });
+
+    if (existingUser) {
+        document.getElementById("message").textContent =
+            "Username or email already exists.";
+        return;
+    }
+
+    users.push({
+        username: username,
+        email: email,
+        password: password
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Registration successful!");
+
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>

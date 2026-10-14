@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Login</h1>
+
+    <input type="text" id="loginUser" placeholder="Username or Email">
+
+    <input type="password" id="loginPassword" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p id="message"></p>
+
+    <p>
+        Don't have an account?
+        <a href="register.html">Register</a>
+    </p>
+
+</div>
+
+<script>
+
+function login() {
+
+    const loginUser = document.getElementById("loginUser").value;
+    const loginPassword = document.getElementById("loginPassword").value;
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const user = users.find(function(user) {
+
+        return (
+            (user.username === loginUser ||
+             user.email === loginUser) &&
+            user.password === loginPassword
+        );
+
+    });
+
+    if (user) {
+
+        localStorage.setItem("loggedInUser", user.username);
+
+        window.location.href = "dashboard.html";
+
+    } else {
+
+        document.getElementById("message").textContent =
+            "Incorrect username/email or password.";
+    }
+}
+
+</script>
+
+</body>
+</html>
